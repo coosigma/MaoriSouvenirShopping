@@ -10,6 +10,14 @@
     padding-right: 15px;
 }
 
+#icon {
+    position: absolute;
+    top: 5px;
+    left: 150px;
+    padding:0px;
+    margin:0px;
+}
+
 /* Carousel */
 .carousel-caption p {
     font-size: 20px;
