@@ -1,0 +1,60 @@
+﻿@model MaoriSouvenirShopping.Models.Souvenir
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Souvenir</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SouvenirName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SouvenirName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PhotoPath)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PhotoPath)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Category.CategoryID)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Supplier)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Supplier.SupplierID)
+        </dd>
+        <dt>
+            Total Orders
+        </dt>
+        <dd>
+             @Model.OrderItems.Count
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.SouvenirID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
