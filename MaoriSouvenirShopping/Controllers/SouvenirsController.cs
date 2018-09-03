@@ -7,16 +7,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MaoriSouvenirShopping.Data;
 using MaoriSouvenirShopping.Models;
+using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+
 
 namespace MaoriSouvenirShopping.Controllers
 {
     public class SouvenirsController : Controller
     {
         private readonly WebShopContext _context;
+        private readonly IHostingEnvironment _hostingEnv;
 
-        public SouvenirsController(WebShopContext context)
+        public SouvenirsController(WebShopContext context, IHostingEnvironment hEnv)
         {
             _context = context;
+            _hostingEnv = hEnv;
         }
 
         // GET: Souvenirs
@@ -62,8 +69,35 @@ namespace MaoriSouvenirShopping.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SouvenirName,Price,PhotoPath,Description,CategoryID,SupplierID")] Souvenir souvenir)
+        public async Task<IActionResult> Create([Bind("SouvenirName,Price,PhotoPath,Description,CategoryID,SupplierID")] Souvenir souvenir, IList<IFormFile> _files)
         {
+            var relativeName = "";
+            var fileName = "";
+
+            if (_files.Count < 1)
+            {
+                relativeName = "/Images/Default.png";
+            }
+            else
+            {
+                foreach (var file in _files)
+                {
+                    fileName = ContentDispositionHeaderValue
+                                      .Parse(file.ContentDisposition)
+                                      .FileName
+                                      .Trim('"');
+                    //Path for localhost
+                    relativeName = "/Images/SouvenirImages/" + DateTime.Now.ToString("ddMMyyyy-HHmmssffffff") + fileName;
+
+                    using (FileStream fs = System.IO.File.Create(_hostingEnv.WebRootPath + relativeName))
+                    {
+                        await file.CopyToAsync(fs);
+                        fs.Flush();
+                    }
+                }
+            }
+            souvenir.PhotoPath = relativeName;
+
             try
             {
                 if (ModelState.IsValid)

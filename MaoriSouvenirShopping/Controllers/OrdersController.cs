@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using MaoriSouvenirShopping.Data;
 using MaoriSouvenirShopping.Models;
 
+
 namespace MaoriSouvenirShopping.Controllers
 {
     public class OrdersController : Controller
@@ -17,7 +18,6 @@ namespace MaoriSouvenirShopping.Controllers
         public OrdersController(WebShopContext context)
         {
             _context = context;
-            ViewBag.Status = Enum.GetNames(typeof(Status)).ToList();
         }
 
         // GET: Orders
@@ -52,6 +52,8 @@ namespace MaoriSouvenirShopping.Controllers
         public IActionResult Create()
         {
             ViewData["CustomerID"] = new SelectList(_context.Customers, "CustomerID", "CustomerID");
+            //ViewBag.Status = Enum.GetNames(typeof(Status)).ToList();
+            //ViewData["Status"] = Enum.GetNames(typeof(Status)).ToList();
             return View();
         }
 

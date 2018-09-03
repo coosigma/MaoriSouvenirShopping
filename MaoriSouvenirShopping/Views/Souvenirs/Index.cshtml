@@ -13,6 +13,9 @@
     <thead>
         <tr>
             <th>
+                Image
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.SouvenirID)
             </th>
             <th>
@@ -20,9 +23,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PhotoPath)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Description)
@@ -38,7 +38,13 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
+        var imgUrl = @Href("~" + item.PhotoPath);
+        var errImg = @Href("~/images/Error.png");
         <tr>
+            <td>
+                <img style="width: 250px; height: auto;" src="@imgUrl" alt="Student Image" onerror="this.onerror = null; this.src = '@errImg'">
+            </td>
+
             <td>
                 @Html.DisplayFor(modelItem => item.SouvenirID)
             </td>
@@ -47,9 +53,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhotoPath)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
