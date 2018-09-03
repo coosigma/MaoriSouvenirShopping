@@ -76,7 +76,7 @@ namespace MaoriSouvenirShopping.Controllers
 
             if (_files.Count < 1)
             {
-                relativeName = "/Images/Default.png";
+                relativeName = "/Images/Souvenir.svg";
             }
             else
             {
@@ -142,12 +142,38 @@ namespace MaoriSouvenirShopping.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditPost(int? id)
+        public async Task<IActionResult> EditPost(int? id, IList<IFormFile> _files)
         {
             if (id == null)
             {
                 return NotFound();
             }
+            var relativeName = "";
+            var fileName = "";
+
+            if (_files.Count < 1)
+            {
+                relativeName = "/Images/Souvenir.svg";
+            }
+            else
+            {
+                foreach (var file in _files)
+                {
+                    fileName = ContentDispositionHeaderValue
+                                      .Parse(file.ContentDisposition)
+                                      .FileName
+                                      .Trim('"');
+                    //Path for localhost
+                    relativeName = "/Images/SouvenirImages/" + DateTime.Now.ToString("ddMMyyyy-HHmmssffffff") + fileName;
+
+                    using (FileStream fs = System.IO.File.Create(_hostingEnv.WebRootPath + relativeName))
+                    {
+                        await file.CopyToAsync(fs);
+                        fs.Flush();
+                    }
+                }
+            }
+            //souvenir.PhotoPath = relativeName;
             var souvenirToUpdate = await _context.Souvenirs.SingleOrDefaultAsync(s => s.SouvenirID == id);
             if (await TryUpdateModelAsync<Souvenir>(
                 souvenirToUpdate,

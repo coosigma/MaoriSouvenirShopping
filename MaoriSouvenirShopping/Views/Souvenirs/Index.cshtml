@@ -39,7 +39,7 @@
     <tbody>
 @foreach (var item in Model) {
         var imgUrl = @Href("~" + item.PhotoPath);
-        var errImg = @Href("~/images/Error.png");
+        var errImg = @Href("~/images/Error.svg");
         <tr>
             <td>
                 <img style="width: 250px; height: auto;" src="@imgUrl" alt="Student Image" onerror="this.onerror = null; this.src = '@errImg'">
