@@ -121,6 +121,7 @@ namespace MaoriSouvenirShopping.Controllers
                 try
                 {
                     await _context.SaveChangesAsync();
+                    ViewData["CustomerID"] = new SelectList(_context.Customers, "CustomerID", "CustomerID", orderToUpdate.CustomerID);
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateException /* ex */)
@@ -131,7 +132,6 @@ namespace MaoriSouvenirShopping.Controllers
                         "see your system administrator.");
                 }
             }
-            //ViewData["CustomerID"] = new SelectList(_context.Customers, "CustomerID", "CustomerID", order.CustomerID);
             return View(orderToUpdate);
         }
 

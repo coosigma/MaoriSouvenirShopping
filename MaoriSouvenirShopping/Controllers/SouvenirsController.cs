@@ -97,13 +97,14 @@ namespace MaoriSouvenirShopping.Controllers
                 }
             }
             souvenir.PhotoPath = relativeName;
-
             try
             {
                 if (ModelState.IsValid)
                 {
                     _context.Add(souvenir);
                     await _context.SaveChangesAsync();
+                    ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryID", souvenir.CategoryID);
+                    ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "SupplierID", souvenir.SupplierID);
                     return RedirectToAction(nameof(Index));
                 }
             }
@@ -114,8 +115,6 @@ namespace MaoriSouvenirShopping.Controllers
                     "Try again, and if the problem persists " +
                     "see your system administrator.");
             }
-            ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryID", souvenir.CategoryID);
-            ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "SupplierID", souvenir.SupplierID);
             return View(souvenir);
         }
 
@@ -173,8 +172,8 @@ namespace MaoriSouvenirShopping.Controllers
                     }
                 }
             }
-            //souvenir.PhotoPath = relativeName;
             var souvenirToUpdate = await _context.Souvenirs.SingleOrDefaultAsync(s => s.SouvenirID == id);
+            souvenirToUpdate.PhotoPath = relativeName;
             if (await TryUpdateModelAsync<Souvenir>(
                 souvenirToUpdate,
                 "",
@@ -183,8 +182,10 @@ namespace MaoriSouvenirShopping.Controllers
                 s => s.SupplierID))
             {
                 try
-                {
+                {                                       
                     await _context.SaveChangesAsync();
+                    ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryID", souvenirToUpdate.CategoryID);
+                    ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "SupplierID", souvenirToUpdate.SupplierID);
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateException /* ex */)
@@ -195,8 +196,6 @@ namespace MaoriSouvenirShopping.Controllers
                         "see your system administrator.");
                 }
             }
-            //ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryID", souvenir.CategoryID);
-            //ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "SupplierID", souvenir.SupplierID);
             return View(souvenirToUpdate);
         }
 
