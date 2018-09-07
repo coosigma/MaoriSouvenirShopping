@@ -6,69 +6,99 @@
 
 <h2>Index</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Image
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SouvenirID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SouvenirName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Category)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Supplier)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        var imgUrl = @Href("~" + item.PhotoPath);
-        var errImg = @Href("~/images/Error.svg");
-        <tr>
-            <td>
-                <img style="width: 250px; height: auto;" src="@imgUrl" alt="Student Image" onerror="this.onerror = null; this.src = '@errImg'">
-            </td>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3" style="position:relative;top:0px">
+            <ul class="nav navbar-left">
+                <li class="nav-header" style="font-size:22px;padding:20px 20px 20px 20px">
+                    Category
+                </li>
+                <li><hr /></li>
+                <li class="active">
+                    <a href="#">Jewels</a>
+                </li>
+                <li>
+                    <a href="#">Crafts</a>
+                </li>
+                <li>
+                    <a href="#">Arts</a>
+                </li>
+                <li>
+                    <a href="#">Foods</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <p>
+                <a asp-action="Create">Create New</a>
+            </p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Image
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SouvenirID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SouvenirName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Price)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Category)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Supplier)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+            {
+                var imgUrl = @Href("~" + item.PhotoPath);
+                var errImg = @Href("~/images/Error.svg");
+                <tr>
+                    <td>
+                        <img style="width: 250px; height: auto;" src="@imgUrl" alt="Student Image" onerror="this.onerror = null; this.src = '@errImg'">
+                    </td>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.SouvenirID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SouvenirName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.CategoryID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Supplier.SupplierID)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.SouvenirID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.SouvenirID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.SouvenirID">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SouvenirID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SouvenirName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category.CategoryID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Supplier.SupplierID)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.SouvenirID">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.SouvenirID">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.SouvenirID">Delete</a>
+                    </td>
+                </tr>
+    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+
