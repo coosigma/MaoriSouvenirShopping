@@ -59,10 +59,5 @@ namespace MaoriSouvenirShopping.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   查找 System.Byte[] 类型的本地化资源。
-        /// </summary>
-
     }
 }
