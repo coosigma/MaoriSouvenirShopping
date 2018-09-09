@@ -57,7 +57,7 @@ namespace MaoriSouvenirShopping.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-            [Bind("LastName,FirstName,PhoneNumber,Email,Address")] Supplier supplier)
+            [Bind("LastName,FirstName,Description,PhoneNumber,Email,Address")] Supplier supplier)
         {
             try
             {
@@ -109,7 +109,7 @@ namespace MaoriSouvenirShopping.Controllers
             if (await TryUpdateModelAsync<Supplier>(
                  supplierToUpdate,
                  "",
-                   s => s.FirstName, s => s.LastName, s => s.PhoneNumber,
+                   s => s.FirstName, s => s.LastName, s=> s.Description, s => s.PhoneNumber,
                    s => s.Email, s => s.Address))
             {               
                 try

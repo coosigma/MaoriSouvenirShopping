@@ -23,6 +23,12 @@
             @Html.DisplayFor(model => model.FirstName)
         </dd>
         <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.PhoneNumber)
         </dt>
         <dd>
@@ -52,7 +58,7 @@
                     <th>Price</th>
                 </tr>
                 @foreach (var item in Model.Souvenirs)
-                {
+            {
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.SouvenirID)
@@ -67,7 +73,7 @@
                         @Html.DisplayFor(modelItem => item.Price)
                     </td>
                 </tr>
-                }
+        }
             </table>
         </dd>
     </dl>

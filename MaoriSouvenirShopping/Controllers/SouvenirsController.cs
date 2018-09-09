@@ -27,10 +27,70 @@ namespace MaoriSouvenirShopping.Controllers
         }
 
         // GET: Souvenirs
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(
+            string sortOrder,
+            string currentFilter,
+            string currentCategory,
+            string searchString,
+            string category,
+            int? page)
         {
-            var webShopContext = _context.Souvenirs.Include(s => s.Category).Include(s => s.Supplier);
-            return View(await webShopContext.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["CurrentCategory"] = category;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["PriceSortParm"] = sortOrder == "Price" ? "price_desc" : "Price";
+            if (searchString != null || category != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                if (searchString == null)
+                    searchString = currentFilter;
+                if (category == null)
+                    category = currentCategory;
+            }
+            ViewData["CurrentFilter"] = searchString;
+            //var souvenirs = (category != null && category != "AllCategories")? from s in _context.Souvenirs
+            //                                    where s.Category.CategoryName == category
+            //                                    select s :
+            //                                    from s in _context.Souvenirs
+            //                                    select s;
+            //var viewModel = new Souvenir();
+            //viewModel = await _context.Souvenirs
+            //    .Include( s => s.Category)
+            //    .ToListAsync();
+            var souvenirs = _context.Souvenirs
+                .Include(s => s.Category)
+                .AsNoTracking();
+            //var svr = _context.Souvenirs;
+            //var souvenirs = from s in _context.Souvenirs
+            //                select s;
+            if (category != null && category != "AllCategories")
+            {
+                souvenirs = souvenirs.Where(s => s.Category.CategoryName == category);
+            }
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                souvenirs = souvenirs.Where(s => s.SouvenirName.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    souvenirs = souvenirs.OrderByDescending(s => s.SouvenirName);
+                    break;
+                case "Price":
+                    souvenirs = souvenirs.OrderBy(s => s.Price);
+                    break;
+                case "price_desc":
+                    souvenirs = souvenirs.OrderByDescending(s => s.Price);
+                    break;
+                default:
+                    souvenirs = souvenirs.OrderBy(s => s.SouvenirName);
+                    break;
+            }
+            int pageSize = 10;
+            return View(await PaginatedList<Souvenir>.CreateAsync(souvenirs.AsNoTracking(), page ?? 1, pageSize));
         }
 
         // GET: Souvenirs/Details/5
@@ -147,12 +207,13 @@ namespace MaoriSouvenirShopping.Controllers
             {
                 return NotFound();
             }
+            var souvenirToUpdate = await _context.Souvenirs.SingleOrDefaultAsync(s => s.SouvenirID == id);
             var relativeName = "";
             var fileName = "";
 
             if (_files.Count < 1)
             {
-                relativeName = "/Images/Souvenir.svg";
+                relativeName = souvenirToUpdate.PhotoPath;
             }
             else
             {
@@ -172,7 +233,7 @@ namespace MaoriSouvenirShopping.Controllers
                     }
                 }
             }
-            var souvenirToUpdate = await _context.Souvenirs.SingleOrDefaultAsync(s => s.SouvenirID == id);
+            
             souvenirToUpdate.PhotoPath = relativeName;
             if (await TryUpdateModelAsync<Souvenir>(
                 souvenirToUpdate,
