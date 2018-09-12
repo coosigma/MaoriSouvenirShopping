@@ -54,25 +54,25 @@ namespace MaoriSouvenirShopping.Data
             //    context.Souvenirs.Add(s);
             //}
             //context.SaveChanges();
-            var orders = new Order[]
-            {
-                 new Order{OrderDate=DateTime.Parse("2018-09-01"),
-                     Status=Status.Ordered, CustomerID=3, TotalCost=1000.00},
-            };
-            foreach (Order o in orders)
-            {
-                context.Orders.Add(o);
-            }
-            context.SaveChanges();
-            var orderItems = new OrderItem[]
-            {
-                 new OrderItem{OrderID=5, SouvenirID=9, ItemAmount=1}
-             };
-            foreach (OrderItem o in orderItems)
-            {
-                context.OrderItems.Add(o);
-            }
-            context.SaveChanges();
+            //var orders = new Order[]
+            //{
+            //     new Order{OrderDate=DateTime.Parse("2018-09-01"),
+            //         Status=Status.Ordered, CustomerID=3, TotalCost=1000.00},
+            //};
+            //foreach (Order o in orders)
+            //{
+            //    context.Orders.Add(o);
+            //}
+            //context.SaveChanges();
+            //var orderItems = new OrderItem[]
+            //{
+            //     new OrderItem{OrderID=5, SouvenirID=9, ItemAmount=1}
+            // };
+            //foreach (OrderItem o in orderItems)
+            //{
+            //    context.OrderItems.Add(o);
+            //}
+            //context.SaveChanges();
 
         }
     }
