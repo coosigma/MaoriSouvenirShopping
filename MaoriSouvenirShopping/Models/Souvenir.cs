@@ -15,7 +15,15 @@ namespace MaoriSouvenirShopping.Models
         public int SupplierID { get; set; }
 
         public Category Category { get; set; }
+        public string CategoryName
+        {
+            get { return Category.CategoryName; }
+        }
         public Supplier Supplier { get; set; }
+        public string SupplierName
+        {
+            get { return Supplier.FullName; }
+        }
 
         public ICollection<OrderItem> OrderItems { get; set; }
 

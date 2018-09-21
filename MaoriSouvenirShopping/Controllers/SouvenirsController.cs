@@ -51,21 +51,12 @@ namespace MaoriSouvenirShopping.Controllers
                     category = currentCategory;
             }
             ViewData["CurrentFilter"] = searchString;
-            //var souvenirs = (category != null && category != "AllCategories")? from s in _context.Souvenirs
-            //                                    where s.Category.CategoryName == category
-            //                                    select s :
-            //                                    from s in _context.Souvenirs
-            //                                    select s;
-            //var viewModel = new Souvenir();
-            //viewModel = await _context.Souvenirs
-            //    .Include( s => s.Category)
-            //    .ToListAsync();
+
             var souvenirs = _context.Souvenirs
                 .Include(s => s.Category)
+                .Include(s => s.Supplier)
                 .AsNoTracking();
-            //var svr = _context.Souvenirs;
-            //var souvenirs = from s in _context.Souvenirs
-            //                select s;
+
             if (category != null && category != "AllCategories")
             {
                 souvenirs = souvenirs.Where(s => s.Category.CategoryName == category);
@@ -119,8 +110,8 @@ namespace MaoriSouvenirShopping.Controllers
         // GET: Souvenirs/Create
         public IActionResult Create()
         {
-            ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryID");
-            ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "SupplierID");
+            ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryName");
+            ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "FullName");
             return View();
         }
 
@@ -136,7 +127,7 @@ namespace MaoriSouvenirShopping.Controllers
 
             if (_files.Count < 1)
             {
-                relativeName = "/Images/Souvenir.svg";
+                relativeName = "/images/Souvenir.svg";
             }
             else
             {
@@ -147,7 +138,7 @@ namespace MaoriSouvenirShopping.Controllers
                                       .FileName
                                       .Trim('"');
                     //Path for localhost
-                    relativeName = "/Images/SouvenirImages/" + DateTime.Now.ToString("ddMMyyyy-HHmmssffffff") + fileName;
+                    relativeName = "/images/SouvenirImages/" + DateTime.Now.ToString("ddMMyyyy-HHmmssffffff") + fileName;
 
                     using (FileStream fs = System.IO.File.Create(_hostingEnv.WebRootPath + relativeName))
                     {
@@ -163,8 +154,8 @@ namespace MaoriSouvenirShopping.Controllers
                 {
                     _context.Add(souvenir);
                     await _context.SaveChangesAsync();
-                    ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryID", souvenir.CategoryID);
-                    ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "SupplierID", souvenir.SupplierID);
+                    //ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryID", souvenir.CategoryID);
+                    //ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "SupplierID", souvenir.SupplierID);
                     return RedirectToAction(nameof(Index));
                 }
             }
@@ -191,8 +182,8 @@ namespace MaoriSouvenirShopping.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryID", souvenir.CategoryID);
-            ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "SupplierID", souvenir.SupplierID);
+            ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", souvenir.CategoryID);
+            ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "FullName", souvenir.SupplierID);
             return View(souvenir);
         }
 
@@ -224,7 +215,7 @@ namespace MaoriSouvenirShopping.Controllers
                                       .FileName
                                       .Trim('"');
                     //Path for localhost
-                    relativeName = "/Images/SouvenirImages/" + DateTime.Now.ToString("ddMMyyyy-HHmmssffffff") + fileName;
+                    relativeName = "/images/SouvenirImages/" + DateTime.Now.ToString("ddMMyyyy-HHmmssffffff") + fileName;
 
                     using (FileStream fs = System.IO.File.Create(_hostingEnv.WebRootPath + relativeName))
                     {
